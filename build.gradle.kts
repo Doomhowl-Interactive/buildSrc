@@ -2,6 +2,7 @@ val kotlinVersion = "1.9.20"
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.20"
+    id("com.google.cloud.artifactregistry.gradle-plugin") version "2.2.0"
     id("java-gradle-plugin")
     id("maven-publish")
 }
@@ -17,6 +18,9 @@ tasks {
 repositories {
     mavenCentral()
     google()
+    maven {
+        url = uri("artifactregistry://europe-west4-maven.pkg.dev/doomhowl-interactive/ndkports")
+    }
 }
 
 dependencies {
@@ -47,6 +51,9 @@ publishing {
     repositories {
         maven {
             url = uri("${project.rootDir}/build/docs")
+        }
+        maven {
+            url = uri("artifactregistry://europe-west4-maven.pkg.dev/doomhowl-interactive/ndkports")
         }
     }
 }
