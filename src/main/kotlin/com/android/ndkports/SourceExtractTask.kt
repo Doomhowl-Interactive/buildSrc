@@ -18,13 +18,21 @@ abstract class SourceExtractTask : DefaultTask() {
     @get:Input
     abstract val gitSource: Property<GitSourceArgs>
 
+    @get:Optional
+    @get:Input
+    abstract val rawSource: Property<File>
+
     @get:OutputDirectory
     abstract val outDir: DirectoryProperty
 
     @TaskAction
     fun run() {
-        if (tarSource.isPresent && gitSource.isPresent) {
-            throw RuntimeException("Both source and gitSource are specified! Use one of the two.")
+        var counter = 0
+        if (tarSource.isPresent) counter++
+        if (gitSource.isPresent) counter++
+        if (rawSource.isPresent) counter++
+        if (counter > 1) {
+            throw RuntimeException("Only one source can be specified, either tar or git")
         }
 
         // skip if output directory already exists
@@ -37,8 +45,18 @@ abstract class SourceExtractTask : DefaultTask() {
             extractTar(tarSource.get().absolutePath);
         } else if (gitSource.isPresent) {
             cloneGitRepo(gitSource.get())
+        } else if (rawSource.isPresent) {
+            val rawSourceFile = rawSource.get()
+            if (!rawSourceFile.isDirectory) {
+                throw RuntimeException("Raw source must be a directory")
+            }
+            if (rawSourceFile.exists()) {
+                rawSourceFile.copyRecursively(outDir.get().asFile, overwrite = true)
+            } else {
+                throw RuntimeException("Raw source folder does not exist: ${rawSourceFile.absolutePath}")
+            }
         } else {
-            throw RuntimeException("No source specified, must be either a tar file or a git URL")
+            throw RuntimeException("No source specified, must be either a tar file, a git URL or raw source folder")
         }
     }
 

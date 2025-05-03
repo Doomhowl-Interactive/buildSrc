@@ -21,6 +21,7 @@ import javax.inject.Inject
 abstract class NdkPortsExtension {
     abstract val sourceTar: Property<File>
     abstract val sourceGit: Property<GitSourceArgs>
+    abstract val rawSource: Property<File>
     abstract val minSdkVersion: Property<Int>
 }
 
@@ -125,6 +126,7 @@ class NdkPortsPluginImpl(
             with(it) {
                 tarSource.set(extension.sourceTar)
                 gitSource.set(extension.sourceGit)
+                rawSource.set(extension.rawSource)
                 outDir.set(topBuildDir.resolve("src"))
             }
         }
