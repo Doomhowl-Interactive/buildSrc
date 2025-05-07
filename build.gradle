@@ -1,0 +1,49 @@
+plugins {
+    id 'com.google.cloud.artifactregistry.gradle-plugin' version '2.2.0'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+group = 'com.android.ndkports'
+version = '2.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    google()
+    maven {
+        url = uri('artifactregistry://europe-west4-maven.pkg.dev/doomhowl-interactive/ndkports')
+    }
+}
+
+dependencies {
+    implementation 'com.google.prefab:api:1.1.2'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:6.7.0.202309050840-r'
+    
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+gradlePlugin {
+    plugins {
+        ndkports {
+            id = 'com.android.ndkports.NdkPorts'
+            implementationClass = 'com.android.ndkports.NdkPortsPlugin'
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("${project.rootDir}/build/docs")
+        }
+        maven {
+            url = uri('artifactregistry://europe-west4-maven.pkg.dev/doomhowl-interactive/ndkports')
+        }
+    }
+}
