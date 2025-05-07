@@ -17,22 +17,28 @@
 package com.android.ndkports;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+
 import java.util.Arrays;
 import java.util.Collections;
 
 @Getter
-@RequiredArgsConstructor
 public enum Abi {
     Arm("arm", "armeabi-v7a", "arm-linux-androideabi", 21),
     Arm64("arm64", "arm64-v8a", "aarch64-linux-android", 21),
     X86("x86", "x86", "i686-linux-android", 21),
     X86_64("x86_64", "x86_64", "x86_64-linux-android", 21);
 
-    private final String archName;
-    private final String abiName;
-    private final String triple;
-    private final int minSupportedVersion;
+    public final String archName;
+    public final String abiName;
+    public final String triple;
+    public final int minSupportedVersion;
+
+    Abi(String archName, String abiName, String triple, int minSupportedVersion) {
+        this.archName = archName;
+        this.abiName = abiName;
+        this.triple = triple;
+        this.minSupportedVersion = minSupportedVersion;
+    }
 
     public int adjustMinSdkVersion(int minSdkVersion) {
         return Collections.max(Arrays.asList(minSdkVersion, minSupportedVersion));
@@ -40,7 +46,7 @@ public enum Abi {
 
     public static Abi fromAbiName(String name) {
         return Arrays.stream(values())
-                .filter(abi -> abi.getAbiName().equals(name))
+                .filter(abi -> abi.abiName.equals(name))
                 .findFirst()
                 .orElse(null);
     }

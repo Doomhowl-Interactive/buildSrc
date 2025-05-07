@@ -42,41 +42,33 @@ public abstract class PackageBuilderTask extends DefaultTask {
      * For example, OpenSSL 1.1.1g will set this value to
      * `CMakeCompatibleVersion(1, 1, 1, 7)`.
      */
-    @Getter
     @Input
     abstract public Property<CMakeCompatibleVersion> getVersion();
 
-    @Getter
     @Input
     abstract public Property<Integer> getMinSdkVersion();
 
-    @Getter
     @Nested
     abstract public NamedDomainObjectContainer<ModuleProperty> getModules();
+
+    @Input
+    abstract public MapProperty<String, String> getDependencies();
+
+    @InputDirectory
+    abstract public DirectoryProperty getSourceDirectory();
+
+    @InputDirectory
+    abstract public DirectoryProperty getInstallDirectory();
+
+    @Internal
+    abstract public DirectoryProperty getOutDir();
+
+    @InputDirectory
+    abstract public DirectoryProperty getNdkPath();
 
     @Getter
     @Input
     private final Property<String> licensePath;
-
-    @Getter
-    @Input
-    abstract public MapProperty<String, String> getDependencies();
-
-    @Getter
-    @InputDirectory
-    abstract public DirectoryProperty getSourceDirectory();
-
-    @Getter
-    @InputDirectory
-    abstract public DirectoryProperty getInstallDirectory();
-
-    @Getter
-    @Internal
-    abstract public DirectoryProperty getOutDir();
-
-    @Getter
-    @InputDirectory
-    abstract public DirectoryProperty getNdkPath();
 
     @Inject
     public PackageBuilderTask(ObjectFactory objectFactory) {

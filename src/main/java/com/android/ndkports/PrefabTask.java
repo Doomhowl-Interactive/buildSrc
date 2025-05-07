@@ -30,7 +30,6 @@ public abstract class PrefabTask extends DefaultTask {
     @InputFiles
     private FileCollection aars;
 
-    @Getter
     @OutputDirectory
     public abstract DirectoryProperty getOutputDirectory();
 
@@ -39,16 +38,13 @@ public abstract class PrefabTask extends DefaultTask {
         return getOutputDirectory().dir("generated");
     }
 
-    @Getter
     @Optional
     @Input
     public abstract Property<Class<? extends BuildSystemInterface>> getGenerator();
 
-    @Getter
     @InputDirectory
     public abstract DirectoryProperty getNdkPath();
 
-    @Getter
     @Input
     public abstract Property<Integer> getMinSdkVersion();
 

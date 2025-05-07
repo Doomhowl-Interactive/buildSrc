@@ -129,7 +129,6 @@ public abstract class Testing {
     // AndroidExecutableTestTask class
     public static abstract class AndroidExecutableTestTask extends DefaultTask {
 
-        @Getter
         @InputDirectory
         public abstract DirectoryProperty getNdkPath();
 
@@ -137,11 +136,9 @@ public abstract class Testing {
             return new Ndk(getNdkPath().getAsFile().get());
         }
 
-        @Getter
         @Input
         public abstract Property<Integer> getMinSdkVersion();
 
-        @Getter
         @Input
         public abstract Property<Consumer<PushBuilder>> getPush();
 
@@ -149,7 +146,6 @@ public abstract class Testing {
             getPush().set(block);
         }
 
-        @Getter
         @Input
         public abstract Property<Consumer<ShellTestBuilder>> getRun();
 

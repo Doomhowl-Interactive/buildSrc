@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
  */
 @Getter
 @EqualsAndHashCode
-@ToString
 public class CMakeCompatibleVersion implements Serializable {
     private final int major;
     private final Integer minor;

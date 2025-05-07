@@ -43,7 +43,7 @@ public class Device {
         }
 
         return abiSet.stream()
-                .sorted((a, b) -> a.getAbiName().compareTo(b.getAbiName()))
+                .sorted(Comparator.comparing(a -> a.abiName))
                 .collect(Collectors.toList());
     }
 

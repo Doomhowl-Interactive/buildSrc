@@ -21,7 +21,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 @Getter
-@AllArgsConstructor
 @ToString
 public class AdbException extends RuntimeException {
     private final Iterable<String> args;

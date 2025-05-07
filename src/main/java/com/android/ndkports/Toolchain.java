@@ -21,33 +21,33 @@ import java.io.File;
 
 public class Toolchain {
     @Getter
-    private final Ndk ndk;
+    public final Ndk ndk;
     @Getter
-    private final Abi abi;
+    public final Abi abi;
     @Getter
-    private final int api;
+    public final int api;
     @Getter
-    private final String binutilsTriple;
+    public final String binutilsTriple;
     @Getter
-    private final File sysrootLibs;
+    public final File sysrootLibs;
     @Getter
-    private final File binDir;
+    public final File binDir;
     @Getter
-    private final File ar;
+    public final File ar;
     @Getter
-    private final File clang;
+    public final File clang;
     @Getter
-    private final File clangxx;
+    public final File clangxx;
     @Getter
-    private final File nm;
+    public final File nm;
     @Getter
-    private final File objdump;
+    public final File objdump;
     @Getter
-    private final File ranlib;
+    public final File ranlib;
     @Getter
-    private final File readelf;
+    public final File readelf;
     @Getter
-    private final File strip;
+    public final File strip;
 
     public Toolchain(Ndk ndk, Abi abi, int api) {
         this.ndk = ndk;

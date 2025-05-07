@@ -1,11 +1,12 @@
 package com.android.ndkports;
 
-import com.google.prefab.api.BuildSystemInterface;
+import com.google.prefab.api.*;
 import com.google.prefab.api.Module;
 import com.google.prefab.api.Package;
-import com.google.prefab.api.PlatformDataInterface;
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
-import java.io.FileAlreadyExistsException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +31,7 @@ public class PrefabSysrootPlugin implements BuildSystemInterface {
     }
 
     @Override
-    public void generate(Collection<PlatformDataInterface> requirements) {
+    public void generate(Collection<? extends PlatformDataInterface> requirements) {
         prepareOutputDirectory(outputDirectory);
 
         for (Package pkg : packages) {
@@ -38,6 +39,20 @@ public class PrefabSysrootPlugin implements BuildSystemInterface {
                 for (PlatformDataInterface requirement : requirements) {
                     installModule(module, requirement);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void prepareOutputDirectory(File directory) {
+        if (directory.exists()) {
+            if (!directory.isDirectory()) {
+                throw new RuntimeException(
+                        "Output location exists but is not a directory: " + directory);
+            }
+        } else {
+            if (!directory.mkdirs()) {
+                throw new RuntimeException("Failed to create output directory: " + directory);
             }
         }
     }
@@ -51,7 +66,7 @@ public class PrefabSysrootPlugin implements BuildSystemInterface {
             return;
         }
 
-        Module.Library library = module.getLibraryFor(requirement);
+        PrebuiltLibrary library = module.getLibraryFor(requirement);
         installHeaders(module.getIncludePath().toFile(), includeDir);
 
         File libDir = new File(installDir, "lib");
@@ -68,7 +83,7 @@ public class PrefabSysrootPlugin implements BuildSystemInterface {
 
     private void installHeaders(File src, File dest) {
         try {
-            org.apache.commons.io.FileUtils.copyDirectory(src, dest, file -> {
+            FileUtils.copyDirectory(src, dest, file -> {
                 if (file.isFile() && file.exists() && new File(dest, file.getName()).exists()) {
                     File existingFile = new File(dest, file.getName());
                     try {

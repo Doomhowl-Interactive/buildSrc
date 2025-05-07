@@ -71,11 +71,11 @@ public abstract class PortTask extends DefaultTask {
     }
 
     public File buildDirectoryFor(Abi abi) {
-        return getBuildDir().getAsFile().get().resolve("build/" + abi);
+        return new File(getBuildDir().getAsFile().get(), "build/" + abi);
     }
 
     public File installDirectoryFor(Abi abi) {
-        return getInstallDir().get().getAsFile().resolve(abi.toString());
+        return new File(getInstallDir().get().getAsFile(), abi.toString());
     }
 
     @TaskAction
